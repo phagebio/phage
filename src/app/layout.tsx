@@ -1,14 +1,11 @@
-
+import type { Metadata } from "next";
+import { Inter } from "next/font/google"; // Use Google Font
 import { Toaster as Sonner } from "sonner";
+import { ThemeProvider } from "@/components/themeprovider";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/components/themeprovider";
 import { AuthProvider } from "@/lib/auth";
 import { ConvexProvider } from "@/lib/convex";
-import { initSecurity } from "@/lib/security";
-import type { Metadata } from "next";
-
-import { Inter } from "next/font/google"; // Use Google Font
 import "./globals.css";
 
 // Security initialization wrapper for client-side
@@ -16,15 +13,24 @@ import SecurityInit from "@/components/SecurityInit";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  ),
   title: {
     default: "Phage - Molecular Dynamics Simulation Platform",
     template: "%s | Phage",
   },
-  description: "Advanced Molecular Dynamics Simulation Platform for researchers and scientists.",
-  keywords: ["Molecular Dynamics", "Simulation", "Science", "Research", "Proteins", "Ligands"],
+  description:
+    "Advanced Molecular Dynamics Simulation Platform for researchers and scientists.",
+  keywords: [
+    "Molecular Dynamics",
+    "Simulation",
+    "Science",
+    "Research",
+    "Proteins",
+    "Ligands",
+  ],
   authors: [{ name: "Your Company" }],
   creator: "Your Company",
   icons: {
@@ -38,7 +44,8 @@ export const metadata: Metadata = {
     url: process.env.NEXT_PUBLIC_APP_URL,
     siteName: "Phage",
     title: "Phage - Molecular Dynamics Simulation Platform",
-    description: "Advanced Molecular Dynamics Simulation Platform for researchers and scientists.",
+    description:
+      "Advanced Molecular Dynamics Simulation Platform for researchers and scientists.",
     images: [
       {
         url: "/phagedesign.png",
@@ -51,7 +58,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Phage - Molecular Dynamics Simulation Platform",
-    description: "Advanced Molecular Dynamics Simulation Platform for researchers and scientists.",
+    description:
+      "Advanced Molecular Dynamics Simulation Platform for researchers and scientists.",
     images: ["/phagedesign.png"],
     creator: "@yourtwitterhandle",
   },
@@ -64,9 +72,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} antialiased`}
-      >
+      <body className={`${inter.className} antialiased`}>
         <ConvexProvider>
           <AuthProvider>
             <ThemeProvider>

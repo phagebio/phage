@@ -17,7 +17,7 @@ export const createSimulation = mutation({
         temperature: v.optional(v.number()),
         pressure: v.optional(v.number()),
         timestep: v.optional(v.number()),
-      })
+      }),
     ),
     pdbFile: v.optional(v.string()),
     sdfFile: v.optional(v.string()),
@@ -129,14 +129,14 @@ export const updateSimulationStatus = mutation({
       v.literal("pending"),
       v.literal("running"),
       v.literal("completed"),
-      v.literal("failed")
+      v.literal("failed"),
     ),
     progress: v.optional(v.number()),
     results: v.optional(
       v.object({
         energyData: v.array(v.number()),
         trajectoryUrl: v.optional(v.string()),
-      })
+      }),
     ),
   },
   handler: async (ctx, args) => {

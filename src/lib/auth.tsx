@@ -29,7 +29,6 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // @ts-ignore - api.auth.getCurrentUser might not be typed yet if backend isn't ready
   const betterAuthUser = useQuery(api.auth.getCurrentUser);
   const isLoading = betterAuthUser === undefined;
 
@@ -38,15 +37,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const user: User | null = userRecord
     ? {
-      id: userRecord.id ?? userRecord._id,
-      email: userRecord.email,
-      name: userRecord.name,
-      emailVerified: userRecord.emailVerified,
-      image: userRecord.image || undefined,
-      createdAt: new Date(userRecord.createdAt ?? userRecord._creationTime),
-      updatedAt: new Date(userRecord.updatedAt ?? userRecord._creationTime),
-      credits: userRecord.credits ?? 0,
-    }
+        id: userRecord.id ?? userRecord._id,
+        email: userRecord.email,
+        name: userRecord.name,
+        emailVerified: userRecord.emailVerified,
+        image: userRecord.image || undefined,
+        createdAt: new Date(userRecord.createdAt ?? userRecord._creationTime),
+        updatedAt: new Date(userRecord.updatedAt ?? userRecord._creationTime),
+        credits: userRecord.credits ?? 0,
+      }
     : null;
 
   const signIn = async (email: string, password: string) => {
@@ -111,11 +110,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const updateCredits = (amount: number) => {
-    // This is a client-side optimsitic update helper or similar?
-    // In a real app, this should be handled by subscription to data.
-    // Since useQuery updates automatically, we might not need this explicitly 
-    // unless we want to trigger something.
-    // For now leaving as no-op or placeholder if the components call it.
     console.log("Updating credits", amount);
   };
 
@@ -127,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signIn,
         signUp,
         signOut,
-        updateCredits
+        updateCredits,
       }}
     >
       {children}

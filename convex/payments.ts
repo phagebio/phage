@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { api, internal } from "./_generated/api";
+import { internal } from "./_generated/api";
 import { action, internalQuery, mutation } from "./_generated/server";
 export const createCheckoutSession = action({
   args: {
@@ -13,7 +13,7 @@ export const createCheckoutSession = action({
         state: v.optional(v.string()),
         postalCode: v.optional(v.string()),
         country: v.optional(v.string()),
-      })
+      }),
     ),
     paymentMethods: v.optional(v.array(v.string())),
   },
@@ -23,7 +23,7 @@ export const createCheckoutSession = action({
     const returnUrl = process.env.DODO_PAYMENTS_RETURN_URL;
     if (!(apiKey && productId && returnUrl)) {
       throw new Error(
-        "Dodo Payments env is not configured. Please set DODO_PAYMENTS_API_KEY, DODO_PAYMENTS_PRODUCT_ID, DODO_PAYMENTS_RETURN_URL"
+        "Dodo Payments env is not configured. Please set DODO_PAYMENTS_API_KEY, DODO_PAYMENTS_PRODUCT_ID, DODO_PAYMENTS_RETURN_URL",
       );
     }
     if (!Number.isFinite(args.credits) || args.credits <= 0) {
@@ -46,12 +46,12 @@ export const createCheckoutSession = action({
     const paymentMethods = args.paymentMethods || ["credit", "debit"];
     const billing_address = args.billingAddress
       ? {
-        street: args.billingAddress.street,
-        city: args.billingAddress.city,
-        state: args.billingAddress.state,
-        zipcode: args.billingAddress.postalCode,
-        country: args.billingAddress.country,
-      }
+          street: args.billingAddress.street,
+          city: args.billingAddress.city,
+          state: args.billingAddress.state,
+          zipcode: args.billingAddress.postalCode,
+          country: args.billingAddress.country,
+        }
       : undefined;
     const idempotencyKey = (
       globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`
@@ -123,7 +123,7 @@ export const createCheckoutSession = action({
     if (!response.ok) {
       const errorText = await response.text().catch(() => "");
       throw new Error(
-        `Dodo API error: ${response.status} - ${errorText || "Unknown error"}`
+        `Dodo API error: ${response.status} - ${errorText || "Unknown error"}`,
       );
     }
     const session = await response.json();

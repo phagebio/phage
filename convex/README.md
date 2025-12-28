@@ -5,14 +5,17 @@ This directory contains the Convex backend functions and schema for the Phage ap
 ## Setup Instructions
 
 1. **Install Convex CLI**
+
    ```bash
    npm install -g convex
    ```
 
 2. **Initialize Convex Project**
+
    ```bash
    npx convex dev
    ```
+
    This will:
    - Create a new Convex project or connect to an existing one
    - Generate the `_generated` folder with TypeScript types
@@ -20,6 +23,7 @@ This directory contains the Convex backend functions and schema for the Phage ap
 
 3. **Set Environment Variables**
    Create a `.env.local` file in the project root:
+
    ```
    VITE_CONVEX_URL=<your-convex-deployment-url>
    ```
@@ -51,6 +55,7 @@ To add email functionality via Resend:
 
 ⚠️ **IMPORTANT**: The current password hashing uses base64 encoding which is NOT SECURE.
 Before deploying to production:
+
 - Install a proper password hashing library (bcrypt, argon2, etc.)
 - Update the `hashPassword` function in `auth.ts`
 - Consider implementing proper session management

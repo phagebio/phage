@@ -4,25 +4,37 @@ import { betterAuth } from "better-auth";
 import { components } from "./_generated/api";
 import type { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
-const siteUrl = process.env.SITE_URL ?? "http://localhost:3000";
+import authConfig from "./auth.config";
+
+const convexSiteUrl = process.env.CONVEX_SITE_URL!;
 export const authComponent = createClient<DataModel>(components.betterAuth);
-import { dodopayments, checkout, portal, webhooks, usage } from "@dodopayments/better-auth";
+
+import {
+  checkout,
+  dodopayments,
+  portal,
+  usage,
+  webhooks,
+} from "@dodopayments/better-auth";
 import DodoPayments from "dodopayments";
 
 export const createAuth = (
   ctx: GenericCtx<DataModel>,
-  { optionsOnly } = { optionsOnly: false }
+  { optionsOnly } = { optionsOnly: false },
 ) => {
   const dodoClient = new DodoPayments({
     bearerToken: process.env.DODO_PAYMENTS_API_KEY || "dummy",
-    environment: (process.env.DODO_PAYMENTS_ENVIRONMENT as "live_mode" | "test_mode") || "test_mode",
+    environment:
+      (process.env.DODO_PAYMENTS_ENVIRONMENT as "live_mode" | "test_mode") ||
+      "test_mode",
   });
 
   return betterAuth({
     logger: {
       disabled: optionsOnly,
     },
-    trustedOrigins: ["*"],
+    baseURL: convexSiteUrl,
+    trustedOrigins: [convexSiteUrl],
     database: authComponent.adapter(ctx),
     emailAndPassword: {
       enabled: true,
@@ -30,11 +42,11 @@ export const createAuth = (
       minPasswordLength: 12,
     },
     plugins: [
-      crossDomain({ siteUrl: siteUrl as string }),
-      //convex(),
+      crossDomain({ siteUrl: convexSiteUrl as string }),
+      convex({ authConfig }),
       dodopayments({
         client: dodoClient,
-        createCustomerOnSignUp: false, // Set to false to avoid failure during dev if keys are missing
+        createCustomerOnSignUp: true, // Set to false to avoid failure during dev if keys are missing
         use: [
           checkout({
             products: [], // Products can be defined here
@@ -82,7 +94,7 @@ export const getCurrentUser = query({
   },
 });
 export const getAuthUserId = async (
-  ctx: GenericCtx<DataModel>
+  ctx: GenericCtx<DataModel>,
 ): Promise<string> => {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {

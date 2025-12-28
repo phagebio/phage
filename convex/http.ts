@@ -2,6 +2,7 @@ import { createDodoWebhookHandler } from "@dodopayments/convex";
 import { httpRouter } from "convex/server";
 import { api } from "./_generated/api";
 import { authComponent, createAuth } from "./auth";
+
 const http = httpRouter();
 authComponent.registerRoutes(http, createAuth, { cors: true });
 http.route({
@@ -26,8 +27,7 @@ http.route({
           userId: userId ? (userId as any) : undefined,
           credits,
         });
-      } catch {
-      }
+      } catch {}
       if (userId && paymentId) {
         try {
           await ctx.runMutation(api.payments.storePaymentTransaction, {
@@ -40,8 +40,7 @@ http.route({
             transactionId: paymentId,
             metadata: payload.data,
           });
-        } catch {
-        }
+        } catch {}
       }
       if (userId && Number.isFinite(credits) && credits > 0) {
         try {
@@ -56,8 +55,7 @@ http.route({
             userId: userId as any,
             credits,
           });
-        } catch {
-        }
+        } catch {}
       }
     },
     onPaymentFailed: async (ctx, payload) => {
@@ -77,8 +75,7 @@ http.route({
           userId: userId ? (userId as any) : undefined,
           credits: 0,
         });
-      } catch {
-      }
+      } catch {}
       if (userId && paymentId) {
         try {
           await ctx.runMutation(api.payments.storePaymentTransaction, {
@@ -90,8 +87,7 @@ http.route({
             transactionId: paymentId,
             metadata: payload.data,
           });
-        } catch {
-        }
+        } catch {}
       }
     },
     onRefundSucceeded: async (ctx, payload) => {
@@ -110,8 +106,7 @@ http.route({
           userId: userId ? (userId as any) : undefined,
           credits,
         });
-      } catch {
-      }
+      } catch {}
     },
   }),
 });

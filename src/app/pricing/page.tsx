@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowRight, Check, DollarSign, Sparkles, Zap } from "lucide-react";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
 import { useAction } from "convex/react";
+import { ArrowRight, Check, DollarSign, Sparkles, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import {
@@ -16,11 +16,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/lib/auth";
+import { convex } from "@/lib/convex";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 
-const Pricing = () => {
-  const { user } = useAuth();
+const PricingContentInner = ({ user }: { user: any }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const createCheckout = useAction(api.payments.createCheckout);
@@ -32,9 +32,24 @@ const Pricing = () => {
   }, []);
 
   const creditOptions = [
-    { credits: 500, label: "Starter", description: "Perfect for testing", popular: false },
-    { credits: 1000, label: "Standard", description: "Most popular choice", popular: true },
-    { credits: 2000, label: "Pro", description: "For power users", popular: false },
+    {
+      credits: 500,
+      label: "Starter",
+      description: "Perfect for testing",
+      popular: false,
+    },
+    {
+      credits: 1000,
+      label: "Standard",
+      description: "Most popular choice",
+      popular: true,
+    },
+    {
+      credits: 2000,
+      label: "Pro",
+      description: "For power users",
+      popular: false,
+    },
   ];
 
   const creditsNeeded = selectedCredits;
@@ -50,7 +65,7 @@ const Pricing = () => {
 
     if (creditsNeeded <= 0) {
       toast.error("Invalid amount", {
-        description: "Please enter a positive number of credits."
+        description: "Please enter a positive number of credits.",
       });
       return;
     }
@@ -68,12 +83,15 @@ const Pricing = () => {
         window.location.href = url;
       } else {
         toast.error("Checkout link missing", {
-          description: "Failed to generate a checkout URL. Please try again."
+          description: "Failed to generate a checkout URL. Please try again.",
         });
       }
     } catch (err) {
       toast.error("Payment error", {
-        description: err instanceof Error ? err.message : "Could not start checkout. Please try again."
+        description:
+          err instanceof Error
+            ? err.message
+            : "Could not start checkout. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -83,8 +101,15 @@ const Pricing = () => {
   const benefits = [
     { icon: <Check className="h-5 w-5" />, text: "No subscription required" },
     { icon: <Check className="h-5 w-5" />, text: "Credits never expire" },
-    { icon: <Check className="h-5 w-5" />, text: "Automatic refunds on failed simulations" },
-    { icon: <Zap className="h-5 w-5" />, text: "5 free credits for new users", highlight: true },
+    {
+      icon: <Check className="h-5 w-5" />,
+      text: "Automatic refunds on failed simulations",
+    },
+    {
+      icon: <Zap className="h-5 w-5" />,
+      text: "5 free credits for new users",
+      highlight: true,
+    },
   ];
 
   const faqs = [
@@ -121,9 +146,7 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      <Header />
-
+    <>
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 mesh-gradient opacity-30 pointer-events-none" />
@@ -133,20 +156,21 @@ const Pricing = () => {
         <div className="container relative mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center">
             <span
-              className={`inline-block mb-6 px-5 py-2.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              className={`inline-block mb-6 px-5 py-2.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
             >
               Simple, Transparent Pricing
             </span>
             <h1
-              className={`mb-8 font-bold text-5xl md:text-6xl lg:text-7xl leading-tight transition-all duration-700 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`mb-8 font-bold text-5xl md:text-6xl lg:text-7xl leading-tight transition-all duration-700 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
             >
               Pay Only for What You{" "}
               <span className="text-gradient">Actually Use</span>
             </h1>
             <p
-              className={`text-muted-foreground text-xl md:text-2xl max-w-2xl mx-auto transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`text-muted-foreground text-xl md:text-2xl max-w-2xl mx-auto transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
             >
-              No subscriptions, no hidden fees. Just straightforward pricing based on simulation time.
+              No subscriptions, no hidden fees. Just straightforward pricing
+              based on simulation time.
             </p>
           </div>
         </div>
@@ -170,7 +194,9 @@ const Pricing = () => {
                 <CardTitle className="mb-2 font-bold text-3xl md:text-4xl">
                   Credit-Based Pricing
                 </CardTitle>
-                <p className="text-muted-foreground text-lg">Simple and transparent</p>
+                <p className="text-muted-foreground text-lg">
+                  Simple and transparent
+                </p>
               </CardHeader>
 
               <CardContent className="relative space-y-8">
@@ -198,12 +224,20 @@ const Pricing = () => {
                   {benefits.map((benefit, i) => (
                     <div
                       key={i}
-                      className={`flex items-center gap-3 p-4 rounded-xl transition-all duration-300 hover:bg-muted/30 ${benefit.highlight ? 'bg-secondary/10 border border-secondary/20' : ''}`}
+                      className={`flex items-center gap-3 p-4 rounded-xl transition-all duration-300 hover:bg-muted/30 ${benefit.highlight ? "bg-secondary/10 border border-secondary/20" : ""}`}
                     >
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${benefit.highlight ? 'bg-gradient-secondary shadow-lg' : 'bg-gradient-primary'} text-white`}>
+                      <div
+                        className={`flex h-10 w-10 items-center justify-center rounded-xl ${benefit.highlight ? "bg-gradient-secondary shadow-lg" : "bg-gradient-primary"} text-white`}
+                      >
                         {benefit.icon}
                       </div>
-                      <span className={benefit.highlight ? 'font-semibold text-secondary' : ''}>
+                      <span
+                        className={
+                          benefit.highlight
+                            ? "font-semibold text-secondary"
+                            : ""
+                        }
+                      >
                         {benefit.text}
                       </span>
                     </div>
@@ -218,10 +252,11 @@ const Pricing = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {creditOptions.map((option) => (
                       <Card
-                        className={`relative cursor-pointer transition-all duration-300 hover:scale-105 ${selectedCredits === option.credits
-                          ? "border-primary bg-primary/10 shadow-glow-sm"
-                          : "border-border/40 bg-background hover:border-primary/30"
-                          }`}
+                        className={`relative cursor-pointer transition-all duration-300 hover:scale-105 ${
+                          selectedCredits === option.credits
+                            ? "border-primary bg-primary/10 shadow-glow-sm"
+                            : "border-border/40 bg-background hover:border-primary/30"
+                        }`}
                         key={option.credits}
                         onClick={() => setSelectedCredits(option.credits)}
                       >
@@ -241,7 +276,9 @@ const Pricing = () => {
                             <span className="text-gradient text-3xl font-bold">
                               {option.credits.toLocaleString()}
                             </span>
-                            <span className="text-muted-foreground text-sm ml-1">credits</span>
+                            <span className="text-muted-foreground text-sm ml-1">
+                              credits
+                            </span>
                           </div>
                           <div className="text-2xl font-bold">
                             ${(option.credits / 10).toFixed(0)}
@@ -296,7 +333,8 @@ const Pricing = () => {
                     </div>
                   ) : (
                     <>
-                      Buy {creditsNeeded.toLocaleString()} credits for ${costInDollars}
+                      Buy {creditsNeeded.toLocaleString()} credits for $
+                      {costInDollars}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </>
                   )}
@@ -364,11 +402,35 @@ const Pricing = () => {
               onClick={handleBuyCredits}
               size="lg"
             >
-              {isLoading ? "Redirecting..." : `Buy ${creditsNeeded.toLocaleString()} credits ($${costInDollars})`}
+              {isLoading
+                ? "Redirecting..."
+                : `Buy ${creditsNeeded.toLocaleString()} credits ($${costInDollars})`}
             </Button>
           </div>
         </div>
       </section>
+    </>
+  );
+};
+
+const Pricing = () => {
+  const { user } = useAuth();
+
+  return (
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      <Header />
+
+      {convex ? (
+        <PricingContentInner user={user} />
+      ) : (
+        <div className="container mx-auto px-4 py-32 text-center">
+          <Card className="max-w-md mx-auto p-12 bg-card/50 backdrop-blur-sm">
+            <p className="text-muted-foreground">
+              Backend connection is currently unavailable.
+            </p>
+          </Card>
+        </div>
+      )}
 
       <Footer />
     </div>

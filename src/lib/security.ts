@@ -5,7 +5,11 @@ const SECURITY_CONFIG = {
 };
 
 export function validateSecureConnection(): void {
-  if (typeof window !== "undefined" && SECURITY_CONFIG.enforceHTTPS && window.location.protocol !== "https:") {
+  if (
+    typeof window !== "undefined" &&
+    SECURITY_CONFIG.enforceHTTPS &&
+    window.location.protocol !== "https:"
+  ) {
     console.error("⚠️ Insecure connection detected. Redirecting to HTTPS...");
     window.location.href = window.location.href.replace("http:", "https:");
   }
@@ -96,17 +100,14 @@ export const secureStorage = {
 
 export function initSecurityMonitoring(): void {
   if (typeof window === "undefined") return;
-  
+
   validateSecureConnection();
   if (window.location.protocol === "https:") {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         const resource = entry as PerformanceResourceTiming;
         if (resource.name.startsWith("http:")) {
-          console.warn(
-            "⚠️ Insecure resource loaded over HTTPS:",
-            resource.name
-          );
+          console.warn("⚠️ Insecure resource loaded over HTTPS:", resource.name);
         }
       }
     });
@@ -124,7 +125,7 @@ export function initSecurityMonitoring(): void {
 
 export async function secureFetch(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<Response> {
   if (SECURITY_CONFIG.enforceHTTPS && !url.startsWith("https://")) {
     throw new Error("Insecure URL: HTTPS required in production");
@@ -136,7 +137,7 @@ export async function secureFetch(
   const controller = new AbortController();
   const timeoutId = setTimeout(
     () => controller.abort(),
-    SECURITY_CONFIG.requestTimeout
+    SECURITY_CONFIG.requestTimeout,
   );
   try {
     const response = await fetch(url, {

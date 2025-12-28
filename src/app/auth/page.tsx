@@ -1,8 +1,15 @@
 "use client";
 
-import { ArrowLeft, CheckCircle, Dna, Eye, EyeOff, Sparkles } from "lucide-react";
-import { useState, useEffect } from "react";
+import {
+  ArrowLeft,
+  CheckCircle,
+  Dna,
+  Eye,
+  EyeOff,
+  Sparkles,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,10 +54,13 @@ export default function Auth() {
     { label: "Uppercase letter (A-Z)", valid: /[A-Z]/.test(password) },
     { label: "Lowercase letter (a-z)", valid: /[a-z]/.test(password) },
     { label: "Number (0-9)", valid: /\d/.test(password) },
-    { label: "Special character (!@#$%^&* etc)", valid: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password) },
+    {
+      label: "Special character (!@#$%^&* etc)",
+      valid: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
+    },
   ];
 
-  const allRequirementsMet = passwordRequirements.every(req => req.valid);
+  const allRequirementsMet = passwordRequirements.every((req) => req.valid);
 
   return (
     <div className="min-h-screen flex">
@@ -64,7 +74,10 @@ export default function Auth() {
 
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-20">
-          <NavLink href="/" className="inline-flex items-center gap-2 mb-12 group">
+          <NavLink
+            href="/"
+            className="inline-flex items-center gap-2 mb-12 group"
+          >
             <ArrowLeft className="h-5 w-5 text-muted-foreground group-hover:-translate-x-1 transition-transform" />
             <span className="text-muted-foreground">Back to home</span>
           </NavLink>
@@ -83,7 +96,8 @@ export default function Auth() {
             </h2>
 
             <p className="text-muted-foreground text-xl leading-relaxed max-w-md">
-              Join thousands of researchers using Phage to power their simulations and accelerate drug discovery.
+              Join thousands of researchers using Phage to power their
+              simulations and accelerate drug discovery.
             </p>
 
             {/* Features list */}
@@ -126,7 +140,7 @@ export default function Auth() {
 
           {/* Header */}
           <div
-            className={`mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`mb-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
             <div className="flex items-center gap-2 mb-3">
               <Sparkles className="h-5 w-5 text-primary" />
@@ -146,12 +160,14 @@ export default function Auth() {
 
           {/* Form card */}
           <div
-            className={`rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-8 shadow-xl transition-all duration-700 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-8 shadow-xl transition-all duration-700 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
             <form className="space-y-5" onSubmit={handleSubmit}>
               {isSignUp && (
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+                  <Label htmlFor="name" className="text-sm font-medium">
+                    Full Name
+                  </Label>
                   <Input
                     className="h-12 px-4 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                     id="name"
@@ -165,7 +181,9 @@ export default function Auth() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </Label>
                 <Input
                   className="h-12 px-4 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                   id="email"
@@ -178,7 +196,9 @@ export default function Auth() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">
+                  Password
+                </Label>
                 <div className="relative">
                   <Input
                     className="h-12 px-4 pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -195,20 +215,28 @@ export default function Auth() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
 
                 {isSignUp && password.length > 0 && (
                   <div className="mt-3 p-4 rounded-xl bg-muted/30 space-y-2">
-                    <p className="text-sm font-medium text-muted-foreground">Password requirements:</p>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Password requirements:
+                    </p>
                     <div className="grid grid-cols-1 gap-1">
                       {passwordRequirements.map((req, i) => (
                         <div
                           key={i}
-                          className={`flex items-center gap-2 text-sm transition-colors ${req.valid ? 'text-emerald-500' : 'text-muted-foreground'}`}
+                          className={`flex items-center gap-2 text-sm transition-colors ${req.valid ? "text-emerald-500" : "text-muted-foreground"}`}
                         >
-                          <CheckCircle className={`h-4 w-4 ${req.valid ? 'opacity-100' : 'opacity-30'}`} />
+                          <CheckCircle
+                            className={`h-4 w-4 ${req.valid ? "opacity-100" : "opacity-30"}`}
+                          />
                           <span>{req.label}</span>
                         </div>
                       ))}
@@ -255,9 +283,13 @@ export default function Auth() {
 
           <p className="mt-6 text-center text-muted-foreground text-sm">
             By continuing, you agree to our{" "}
-            <NavLink href="/terms" className="text-primary hover:underline">Terms of Service</NavLink>
-            {" "}and{" "}
-            <NavLink href="/privacy" className="text-primary hover:underline">Privacy Policy</NavLink>
+            <NavLink href="/terms" className="text-primary hover:underline">
+              Terms of Service
+            </NavLink>{" "}
+            and{" "}
+            <NavLink href="/privacy" className="text-primary hover:underline">
+              Privacy Policy
+            </NavLink>
           </p>
         </div>
       </div>
