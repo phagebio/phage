@@ -2,7 +2,7 @@
 
 import { LogOut, Menu, User, X } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "@/components/NavLink";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -39,10 +39,11 @@ const Header = () => {
   return (
     <>
       <header
-        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${isScrolled
+        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
+          isScrolled
             ? "bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm"
             : "bg-transparent"
-          }`}
+        }`}
       >
         <nav className="container mx-auto flex h-20 items-center justify-between px-4">
           {/* Logo */}
@@ -99,9 +100,13 @@ const Header = () => {
                       variant="ghost"
                     >
                       <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white font-medium text-sm">
-                        {user.name?.charAt(0).toUpperCase() || <User className="h-4 w-4" />}
+                        {user.name?.charAt(0).toUpperCase() || (
+                          <User className="h-4 w-4" />
+                        )}
                       </div>
-                      <span className="hidden font-medium md:inline">{user.name}</span>
+                      <span className="hidden font-medium md:inline">
+                        {user.name}
+                      </span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
@@ -201,8 +206,11 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          }`}
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${
+          isMobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
       >
         {/* Backdrop */}
         <div
@@ -212,8 +220,9 @@ const Header = () => {
 
         {/* Menu content */}
         <nav
-          className={`absolute top-20 left-0 right-0 bg-card/95 backdrop-blur-xl border-b border-border/40 shadow-lg transition-all duration-300 ${isMobileMenuOpen ? "translate-y-0" : "-translate-y-4"
-            }`}
+          className={`absolute top-20 left-0 right-0 bg-card/95 backdrop-blur-xl border-b border-border/40 shadow-lg transition-all duration-300 ${
+            isMobileMenuOpen ? "translate-y-0" : "-translate-y-4"
+          }`}
         >
           <div className="container mx-auto px-4 py-6 space-y-2">
             {navLinks.map((link, i) => (
@@ -238,7 +247,9 @@ const Header = () => {
                   </div>
                   <div>
                     <p className="font-medium">{user.name}</p>
-                    <p className="text-muted-foreground text-sm">{user.credits} credits</p>
+                    <p className="text-muted-foreground text-sm">
+                      {user.credits} credits
+                    </p>
                   </div>
                 </div>
                 <NavLink

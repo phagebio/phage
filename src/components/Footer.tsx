@@ -17,10 +17,26 @@ const footerLinks = {
     { href: "/terms", label: "Terms" },
   ],
   socials: [
-    { href: "https://twitter.com", icon: <Twitter className="h-5 w-5" />, label: "Twitter" },
-    { href: "https://github.com", icon: <Github className="h-5 w-5" />, label: "GitHub" },
-    { href: "https://linkedin.com", icon: <Linkedin className="h-5 w-5" />, label: "LinkedIn" },
-    { href: "mailto:support@phage.bio", icon: <Mail className="h-5 w-5" />, label: "Email" },
+    {
+      href: "https://twitter.com",
+      icon: <Twitter className="h-5 w-5" />,
+      label: "Twitter",
+    },
+    {
+      href: "https://github.com",
+      icon: <Github className="h-5 w-5" />,
+      label: "GitHub",
+    },
+    {
+      href: "https://linkedin.com",
+      icon: <Linkedin className="h-5 w-5" />,
+      label: "LinkedIn",
+    },
+    {
+      href: "mailto:support@phage.bio",
+      icon: <Mail className="h-5 w-5" />,
+      label: "Email",
+    },
   ],
 };
 
@@ -43,7 +59,8 @@ const Footer = () => {
               <span className="text-gradient font-bold text-2xl">Phage</span>
             </NavLink>
             <p className="text-muted-foreground text-lg leading-relaxed max-w-sm">
-              Accelerating molecular discovery through advanced cloud-based simulations and AI-powered analysis.
+              Accelerating molecular discovery through advanced cloud-based
+              simulations and AI-powered analysis.
             </p>
 
             {/* Social links */}
@@ -128,10 +145,16 @@ const Footer = () => {
               © {new Date().getFullYear()} Phage. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-muted-foreground text-sm">
-              <NavLink href="/privacy" className="hover:text-foreground transition-colors">
+              <NavLink
+                href="/privacy"
+                className="hover:text-foreground transition-colors"
+              >
                 Privacy Policy
               </NavLink>
-              <NavLink href="/terms" className="hover:text-foreground transition-colors">
+              <NavLink
+                href="/terms"
+                className="hover:text-foreground transition-colors"
+              >
                 Terms of Service
               </NavLink>
             </div>

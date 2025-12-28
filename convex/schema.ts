@@ -19,7 +19,7 @@ export default defineSchema({
       v.literal("pending"),
       v.literal("running"),
       v.literal("completed"),
-      v.literal("failed")
+      v.literal("failed"),
     ),
     progress: v.number(),
     pdbFile: v.optional(v.string()),
@@ -37,7 +37,7 @@ export default defineSchema({
         temperature: v.optional(v.number()),
         pressure: v.optional(v.number()),
         timestep: v.optional(v.number()),
-      })
+      }),
     ),
     creditsUsed: v.number(),
     createdAt: v.number(),
@@ -46,7 +46,7 @@ export default defineSchema({
       v.object({
         energyData: v.array(v.number()),
         trajectoryUrl: v.optional(v.string()),
-      })
+      }),
     ),
   })
     .index("by_user", ["userId"])
@@ -60,7 +60,7 @@ export default defineSchema({
     status: v.union(
       v.literal("pending"),
       v.literal("sent"),
-      v.literal("failed")
+      v.literal("failed"),
     ),
   }).index("by_status", ["status"]),
   auditLogs: defineTable({
@@ -114,7 +114,7 @@ export default defineSchema({
       v.literal("info"),
       v.literal("warning"),
       v.literal("error"),
-      v.literal("critical")
+      v.literal("critical"),
     ),
     timestamp: v.number(),
   })

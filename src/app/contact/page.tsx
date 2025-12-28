@@ -23,9 +23,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { convex } from "@/lib/convex";
 import { api } from "../../../convex/_generated/api";
 
-const Contact = () => {
+const ContactFormInner = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,7 +37,6 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submitContactForm = useMutation(api.contact.submitContactForm);
 
-  // @ts-ignore - api.emails might not exist yet
   const sendEmail = useAction(api.emails?.sendContactEmail);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,7 +60,9 @@ const Contact = () => {
             subject: `[${formData.category}] ${formData.subject}`,
             message: formData.message,
           });
-          toast.success("Message sent successfully! We'll get back to you soon.");
+          toast.success(
+            "Message sent successfully! We'll get back to you soon.",
+          );
         } else {
           // If email API is not ready, just log or skip
           console.warn("Email API not ready, skipped sending email.");
@@ -87,6 +89,102 @@ const Contact = () => {
     }
   };
 
+  return (
+    <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <CardHeader>
+        <CardTitle>Send us a message</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                placeholder="Your name"
+                required
+                value={formData.name}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                placeholder="you@example.com"
+                required
+                type="email"
+                value={formData.email}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
+              }
+              value={formData.category}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a topic" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="general">General Inquiry</SelectItem>
+                <SelectItem value="support">Technical Support</SelectItem>
+                <SelectItem value="billing">Billing & Credits</SelectItem>
+                <SelectItem value="partnership">Partnership</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="subject">Subject</Label>
+            <Input
+              id="subject"
+              onChange={(e) =>
+                setFormData({ ...formData, subject: e.target.value })
+              }
+              placeholder="How can we help?"
+              required
+              value={formData.subject}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="message">Message</Label>
+            <Textarea
+              className="min-h-[150px]"
+              id="message"
+              onChange={(e) =>
+                setFormData({ ...formData, message: e.target.value })
+              }
+              placeholder="Tell us more about your inquiry..."
+              required
+              value={formData.message}
+            />
+          </div>
+
+          <Button
+            className="w-full bg-gradient-primary shadow-glow transition-opacity hover:opacity-90"
+            disabled={isSubmitting}
+            type="submit"
+          >
+            {isSubmitting ? "Sending..." : "Send Message"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+};
+
+const Contact = () => {
   const quickFaqs = [
     {
       question: "How do I upload files?",
@@ -134,99 +232,26 @@ const Contact = () => {
       <section className="pb-24">
         <div className="container mx-auto px-4">
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
-
-            {/* Contact Form */}
-            <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle>Send us a message</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        placeholder="Your name"
-                        required
-                        value={formData.name}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
-                        placeholder="you@example.com"
-                        required
-                        type="email"
-                        value={formData.email}
-                      />
-                    </div>
+            {/* Contact Form Wrapper */}
+            {convex ? (
+              <ContactFormInner />
+            ) : (
+              <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle>Send us a message</CardTitle>
+                </CardHeader>
+                <CardContent className="h-[400px] flex items-center justify-center text-center p-8">
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      Backend connection is currently unavailable.
+                    </p>
+                    <p className="text-sm text-muted-foreground/60">
+                      Please ensure NEXT_PUBLIC_CONVEX_SITE_URL is set correctly.
+                    </p>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="category">Category</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, category: value })
-                      }
-                      value={formData.category}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a topic" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="general">General Inquiry</SelectItem>
-                        <SelectItem value="support">Technical Support</SelectItem>
-                        <SelectItem value="billing">Billing & Credits</SelectItem>
-                        <SelectItem value="partnership">Partnership</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input
-                      id="subject"
-                      onChange={(e) =>
-                        setFormData({ ...formData, subject: e.target.value })
-                      }
-                      placeholder="How can we help?"
-                      required
-                      value={formData.subject}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      className="min-h-[150px]"
-                      id="message"
-                      onChange={(e) =>
-                        setFormData({ ...formData, message: e.target.value })
-                      }
-                      placeholder="Tell us more about your inquiry..."
-                      required
-                      value={formData.message}
-                    />
-                  </div>
-
-                  <Button
-                    className="w-full bg-gradient-primary shadow-glow transition-opacity hover:opacity-90"
-                    disabled={isSubmitting}
-                    type="submit"
-                  >
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             {/* FAQs */}
             <div className="space-y-8">
@@ -253,8 +278,10 @@ const Contact = () => {
               <div className="rounded-xl border border-border/40 bg-muted/20 p-6">
                 <h3 className="mb-2 font-semibold">Office Location</h3>
                 <p className="mb-4 text-muted-foreground text-sm">
-                  123 Innovation Drive<br />
-                  Tech City, TC 94043<br />
+                  123 Innovation Drive
+                  <br />
+                  Tech City, TC 94043
+                  <br />
                   United States
                 </p>
                 <h3 className="mb-2 font-semibold">Email</h3>

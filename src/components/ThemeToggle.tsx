@@ -13,9 +13,7 @@ export const ThemeToggle = () => {
   }, []);
 
   if (!mounted) {
-    return (
-      <div className="w-10 h-10 rounded-xl bg-muted/50 animate-pulse" />
-    );
+    return <div className="w-10 h-10 rounded-xl bg-muted/50 animate-pulse" />;
   }
 
   const isDark = theme === "dark";
@@ -34,18 +32,20 @@ export const ThemeToggle = () => {
     >
       {/* Sun icon */}
       <Sun
-        className={`absolute h-5 w-5 transition-all duration-500 ${isDark
+        className={`absolute h-5 w-5 transition-all duration-500 ${
+          isDark
             ? "rotate-0 scale-100 text-yellow-500"
             : "rotate-90 scale-0 text-yellow-500"
-          }`}
+        }`}
       />
 
       {/* Moon icon */}
       <Moon
-        className={`absolute h-5 w-5 transition-all duration-500 ${isDark
+        className={`absolute h-5 w-5 transition-all duration-500 ${
+          isDark
             ? "-rotate-90 scale-0 text-primary"
             : "rotate-0 scale-100 text-primary"
-          }`}
+        }`}
       />
 
       {/* Glow effect on hover */}

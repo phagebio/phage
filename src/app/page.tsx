@@ -1,16 +1,49 @@
 "use client";
 
-import { ArrowRight, Atom, CheckCircle2, FlaskConical, Play, Shield, Sparkles, Timer, Users, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  Atom,
+  Box,
+  CheckCircle2,
+  FlaskConical,
+  Palette,
+  Play,
+  RotateCcw,
+  Shield,
+  Sparkles,
+  Timer,
+  Users,
+  Zap,
+} from "lucide-react";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "@/components/NavLink";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
+
+const MolstarViewer = dynamic(() => import("@/components/MolstarViewer"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
+    </div>
+  ),
+});
+
+import type { MolstarViewerRef } from "@/components/MolstarViewer";
 
 const Index = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
+  const molstarRef = useRef<MolstarViewerRef>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentRepr, setCurrentRepr] = useState<
+    "cartoon" | "ball-and-stick" | "surface"
+  >("cartoon");
+  const [currentColor, setCurrentColor] = useState<
+    "chain" | "element" | "rainbow"
+  >("chain");
 
   useEffect(() => {
     setIsVisible(true);
@@ -30,29 +63,44 @@ const Index = () => {
   }, []);
 
   const stats = [
-    { value: "10k+", label: "Simulations Run", icon: <Sparkles className="h-5 w-5" /> },
+    {
+      value: "10k+",
+      label: "Simulations Run",
+      icon: <Sparkles className="h-5 w-5" />,
+    },
     { value: "99.9%", label: "Uptime", icon: <Shield className="h-5 w-5" /> },
-    { value: "50x", label: "Faster Results", icon: <Zap className="h-5 w-5" /> },
-    { value: "24/7", label: "Expert Support", icon: <Users className="h-5 w-5" /> },
+    {
+      value: "50x",
+      label: "Faster Results",
+      icon: <Zap className="h-5 w-5" />,
+    },
+    {
+      value: "24/7",
+      label: "Expert Support",
+      icon: <Users className="h-5 w-5" />,
+    },
   ];
 
   const features = [
     {
       icon: <Zap className="h-8 w-8" />,
       title: "Flash Speed",
-      description: "Leverage our distributed GPU cloud to run simulations in minutes, not days.",
+      description:
+        "Leverage our distributed GPU cloud to run simulations in minutes, not days.",
       gradient: "from-yellow-500 to-orange-500",
     },
     {
       icon: <Shield className="h-8 w-8" />,
       title: "Enterprise Security",
-      description: "Your data is encrypted end-to-end with industry-standard protocols.",
+      description:
+        "Your data is encrypted end-to-end with industry-standard protocols.",
       gradient: "from-emerald-500 to-teal-500",
     },
     {
       icon: <FlaskConical className="h-8 w-8" />,
       title: "High Accuracy",
-      description: "Validated force fields and algorithms ensure publication-quality results.",
+      description:
+        "Validated force fields and algorithms ensure publication-quality results.",
       gradient: "from-violet-500 to-purple-500",
     },
   ];
@@ -87,86 +135,203 @@ const Index = () => {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float delay-300 opacity-20 pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl animate-pulse opacity-20 pointer-events-none" />
 
-        <div className="container relative mx-auto px-4 text-center">
-          {/* Badge */}
-          <div
-            className={`mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2.5 font-medium text-primary text-sm backdrop-blur-sm transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-            </span>
-            Next Generation Molecular Dynamics
-            <Sparkles className="h-4 w-4 text-primary/70" />
-          </div>
+        <div className="container relative mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Text Content */}
+            <div className="text-left">
+              {/* Badge */}
+              <div
+                className={`mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2.5 font-medium text-primary text-sm backdrop-blur-sm transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                </span>
+                Next Generation Molecular Dynamics
+                <Sparkles className="h-4 w-4 text-primary/70" />
+              </div>
 
-          {/* Main heading */}
-          <h1
-            className={`mb-8 font-bold text-5xl leading-tight tracking-tight md:text-7xl lg:text-8xl transition-all duration-700 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            Simulate Molecules{" "}
-            <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent animate-gradient-x">
-                At Scale
-              </span>
-              <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
-                <path
-                  d="M2 10C50 4 100 2 150 6C200 10 250 4 298 2"
-                  stroke="url(#underline-gradient)"
-                  strokeWidth="4"
+              {/* Main heading */}
+              <h1
+                className={`mb-8 font-bold text-5xl leading-tight tracking-tight md:text-7xl lg:text-8xl transition-all duration-700 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              >
+                Simulate Molecules <br className="hidden md:block" />
+                <span className="relative inline-block">
+                  <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-600 bg-clip-text text-transparent animate-gradient-x">
+                    At Scale
+                  </span>
+                  <svg
+                    className="absolute -bottom-2 left-0 w-full"
+                    viewBox="0 0 300 12"
+                    fill="none"
+                  >
+                    <path
+                      d="M2 10C50 4 100 2 150 6C200 10 250 4 298 2"
+                      stroke="url(#underline-gradient)"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      className="animate-fade-in delay-500"
+                    />
+                    <defs>
+                      <linearGradient
+                        id="underline-gradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="0%"
+                      >
+                        <stop offset="0%" stopColor="hsl(var(--primary))" />
+                        <stop offset="100%" stopColor="hsl(var(--secondary))" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </span>
+              </h1>
+
+              {/* Subtitle */}
+              <p
+                className={`mb-12 max-w-2xl text-muted-foreground text-xl md:text-2xl leading-relaxed transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              >
+                Run complex molecular simulations in the cloud with
+                unprecedented speed and accuracy.
+                <span className="text-foreground font-medium">
+                  {" "}
+                  No expensive hardware required.
+                </span>
+              </p>
+
+              {/* CTA Buttons */}
+              <div
+                className={`flex flex-col items-center justify-start gap-4 sm:flex-row transition-all duration-700 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              >
+                <NavLink href="/auth">
+                  <Button
+                    size="lg"
+                    className="group h-14 w-full min-w-[200px] bg-gradient-primary text-lg font-semibold shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:scale-105 sm:w-auto"
+                  >
+                    Start Free Trial
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </NavLink>
+                <NavLink href="/features">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="group h-14 w-full min-w-[200px] text-lg font-semibold border-2 hover:bg-primary/5 hover:border-primary/50 transition-all duration-300 sm:w-auto"
+                  >
+                    <div className="relative">
+                      <Play className="mr-2 h-5 w-5 fill-current transition-transform group-hover:scale-110" />
+                    </div>
+                    Watch Demo
+                  </Button>
+                </NavLink>
+              </div>
+            </div>
+
+            {/* Hero Illustration - Now a foreground element */}
+            <div
+              className={`relative transition-all duration-1000 delay-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+            >
+              {/* Sketch with arrow pointing to viewer */}
+              <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce-slow z-30">
+                <span className="font-handwriting text-lg text-primary/80 whitespace-nowrap rotate-[-3deg]">
+                  ✨ Interact with this!
+                </span>
+                <svg
+                  className="w-8 h-8 text-primary/60"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
                   strokeLinecap="round"
-                  className="animate-fade-in delay-500"
-                />
-                <defs>
-                  <linearGradient id="underline-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="hsl(var(--primary))" />
-                    <stop offset="100%" stopColor="hsl(var(--secondary))" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
-          </h1>
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 5v14M19 12l-7 7-7-7" />
+                </svg>
+              </div>
 
-          {/* Subtitle */}
-          <p
-            className={`mx-auto mb-12 max-w-2xl text-muted-foreground text-xl md:text-2xl leading-relaxed transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            Run complex molecular simulations in the cloud with unprecedented speed and accuracy.
-            <span className="text-foreground font-medium"> No expensive hardware required.</span>
-          </p>
+              <div className="relative aspect-[4/3] w-full max-w-[600px] mx-auto">
+                <div className="absolute inset-0 rounded-3xl bg-primary/20 blur-3xl -z-10 animate-pulse" />
+                <div className="relative h-full w-full rounded-3xl overflow-hidden border border-primary/20 bg-card/40 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] group">
+                  {/* Interface header */}
+                  <div className="absolute inset-x-0 top-0 h-10 bg-white/5 backdrop-blur-sm flex items-center px-6 gap-2 z-20">
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/20" />
+                    </div>
+                    <div className="flex-1 text-center font-mono text-[10px] text-white/40 uppercase tracking-widest">
+                      nucleosome_1aoi
+                    </div>
+                  </div>
 
-          {/* CTA Buttons */}
-          <div
-            className={`flex flex-col items-center justify-center gap-4 sm:flex-row transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            <NavLink href="/auth">
-              <Button
-                size="lg"
-                className="group h-14 w-full min-w-[200px] bg-gradient-primary text-lg font-semibold shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:scale-105 sm:w-auto"
-              >
-                Start Free Trial
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </NavLink>
-            <NavLink href="/features">
-              <Button
-                size="lg"
-                variant="outline"
-                className="group h-14 w-full min-w-[200px] text-lg font-semibold border-2 hover:bg-primary/5 hover:border-primary/50 transition-all duration-300 sm:w-auto"
-              >
-                <div className="relative">
-                  <Play className="mr-2 h-5 w-5 fill-current transition-transform group-hover:scale-110" />
+                  {/* Molstar Viewer */}
+                  <div className="h-full w-full pt-10">
+                    <MolstarViewer
+                      ref={molstarRef}
+                      pdbId="1AOI"
+                      className="w-full h-full"
+                    />
+                  </div>
+
+                  {/* Decorative mesh/grid overlay */}
+                  <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent)] opacity-50" />
                 </div>
-                Watch Demo
-              </Button>
-            </NavLink>
-          </div>
-        </div>
 
-        {/* Decorative 3D molecule */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-20 pointer-events-none hidden xl:block">
-          <div className="relative w-full h-full animate-spin-slow">
-            <Atom className="w-full h-full text-primary" />
+                {/* Controls below viewer */}
+                <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">
+                  {/* Representation selector */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next =
+                        currentRepr === "cartoon"
+                          ? "ball-and-stick"
+                          : currentRepr === "ball-and-stick"
+                            ? "surface"
+                            : "cartoon";
+                      setCurrentRepr(next);
+                      molstarRef.current?.setRepresentation(next);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-card/60 backdrop-blur-sm border border-primary/20 text-sm font-medium text-foreground/80 hover:bg-primary/10 hover:border-primary/40 transition-all duration-200"
+                  >
+                    <Box className="w-4 h-4" />
+                    <span className="capitalize">
+                      {currentRepr.replace("-", " ")}
+                    </span>
+                  </button>
+
+                  {/* Color selector */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next =
+                        currentColor === "chain"
+                          ? "element"
+                          : currentColor === "element"
+                            ? "rainbow"
+                            : "chain";
+                      setCurrentColor(next);
+                      molstarRef.current?.setColor(next);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-card/60 backdrop-blur-sm border border-secondary/20 text-sm font-medium text-foreground/80 hover:bg-secondary/10 hover:border-secondary/40 transition-all duration-200"
+                  >
+                    <Palette className="w-4 h-4" />
+                    <span className="capitalize">{currentColor}</span>
+                  </button>
+
+                  {/* Reset zoom */}
+                  <button
+                    type="button"
+                    onClick={() => molstarRef.current?.resetZoom()}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-card/60 backdrop-blur-sm border border-accent/20 text-sm font-medium text-foreground/80 hover:bg-accent/10 hover:border-accent/40 transition-all duration-200"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    <span>Reset View</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -190,7 +355,9 @@ const Index = () => {
                   <h3 className="font-bold text-4xl md:text-5xl bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500 bg-clip-text text-transparent mb-1">
                     {stat.value}
                   </h3>
-                  <p className="text-muted-foreground text-sm md:text-base">{stat.label}</p>
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             ))}
@@ -210,7 +377,8 @@ const Index = () => {
               Why Choose <span className="text-gradient">Phage</span>?
             </h2>
             <p className="mx-auto max-w-2xl text-muted-foreground text-xl animate-fade-in delay-200">
-              Built for researchers, by researchers. We understand what you need to accelerate your drug discovery pipeline.
+              Built for researchers, by researchers. We understand what you need
+              to accelerate your drug discovery pipeline.
             </p>
           </div>
 
@@ -221,7 +389,9 @@ const Index = () => {
                 className="group interactive-card rounded-3xl border border-border/50 bg-card/50 backdrop-blur-sm p-8 lg:p-10"
                 style={{ animationDelay: `${i * 150}ms` }}
               >
-                <div className={`mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${feature.gradient} text-white shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl`}>
+                <div
+                  className={`mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${feature.gradient} text-white shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl`}
+                >
                   {feature.icon}
                 </div>
                 <h3 className="mb-4 font-bold text-2xl group-hover:text-gradient transition-all duration-300">
@@ -339,7 +509,9 @@ const Index = () => {
                         <FlaskConical className="h-4 w-4 text-primary" />
                       </div>
                       <div>
-                        <div className="font-medium text-white/90">4 Ligands</div>
+                        <div className="font-medium text-white/90">
+                          4 Ligands
+                        </div>
                         <div className="text-white/50">Active</div>
                       </div>
                     </div>
@@ -363,8 +535,8 @@ const Index = () => {
               <span className="text-gradient">Research</span>?
             </h2>
             <p className="text-muted-foreground text-xl animate-fade-in delay-100">
-              Join thousands of researchers using Phage to power their discoveries.
-              Start with 5 free credits today.
+              Join thousands of researchers using Phage to power their
+              discoveries. Start with 5 free credits today.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in delay-200">
               <NavLink href="/auth">

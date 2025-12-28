@@ -1,10 +1,21 @@
 "use client";
 
-import { Activity, ArrowRight, BarChart3, Cloud, Cpu, Database, Globe, Lock, Share2, Zap } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  BarChart3,
+  Cloud,
+  Cpu,
+  Database,
+  Globe,
+  Lock,
+  Share2,
+  Zap,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink } from "@/components/NavLink";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -19,7 +30,8 @@ const Features = () => {
     {
       icon: <Cloud className="h-8 w-8" />,
       title: "Cloud Native",
-      description: "Run simulations on our scalable cloud infrastructure. No local hardware needed.",
+      description:
+        "Run simulations on our scalable cloud infrastructure. No local hardware needed.",
       gradient: "from-blue-500 to-cyan-500",
       delay: 0,
     },
@@ -33,60 +45,60 @@ const Features = () => {
     {
       icon: <Database className="h-8 w-8" />,
       title: "Automated Parametrization",
-      description: "Auto-generate force field parameters for small molecules using GAFF2/OpenFF.",
+      description:
+        "Auto-generate force field parameters for small molecules using GAFF2/OpenFF.",
       gradient: "from-amber-500 to-orange-500",
       delay: 100,
     },
     {
       icon: <Activity className="h-8 w-8" />,
       title: "Real-time Monitoring",
-      description: "Watch your simulation progress with live energetic plots and trajectory streaming.",
+      description:
+        "Watch your simulation progress with live energetic plots and trajectory streaming.",
       gradient: "from-emerald-500 to-teal-500",
       delay: 150,
     },
     {
       icon: <BarChart3 className="h-8 w-8" />,
       title: "Advanced Analysis",
-      description: "Built-in tools for RMSD, RMSF, Hydrogen bonding, and free energy calculations.",
+      description:
+        "Built-in tools for RMSD, RMSF, Hydrogen bonding, and free energy calculations.",
       gradient: "from-rose-500 to-pink-500",
       delay: 200,
     },
     {
       icon: <Lock className="h-8 w-8" />,
       title: "Secure Storage",
-      description: "Your data is encrypted at rest and in transit. Compliant with industry standards.",
+      description:
+        "Your data is encrypted at rest and in transit. Compliant with industry standards.",
       gradient: "from-slate-500 to-zinc-500",
       delay: 250,
     },
     {
       icon: <Globe className="h-8 w-8" />,
       title: "Global CDN",
-      description: "Access your data from anywhere in the world with low latency.",
+      description:
+        "Access your data from anywhere in the world with low latency.",
       gradient: "from-indigo-500 to-blue-500",
       delay: 300,
     },
     {
       icon: <Share2 className="h-8 w-8" />,
       title: "Collaboration",
-      description: "Share projects with your team or collaborators with granular permission controls.",
+      description:
+        "Share projects with your team or collaborators with granular permission controls.",
       gradient: "from-fuchsia-500 to-purple-500",
       delay: 350,
     },
     {
       icon: <Zap className="h-8 w-8" />,
       title: "API Access",
-      description: "Integrate Phage into your automated workflows with our comprehensive REST API.",
+      description:
+        "Integrate Phage into your automated workflows with our comprehensive REST API.",
       gradient: "from-yellow-500 to-amber-500",
       delay: 400,
     },
   ];
-
-  const highlights = [
-    { value: "5x", label: "Faster than local", description: "Average speed improvement" },
-    { value: "99.9%", label: "Uptime", description: "Enterprise reliability" },
-    { value: "500+", label: "Research papers", description: "Powered by Phage" },
-  ];
-
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Header />
@@ -101,17 +113,21 @@ const Features = () => {
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <span
-              className={`inline-block mb-6 px-5 py-2.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              className={`inline-block mb-6 px-5 py-2.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
             >
               Platform Features
             </span>
             <h1
-              className={`mb-8 font-bold text-5xl md:text-6xl lg:text-7xl leading-tight transition-all duration-700 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`mb-8 font-bold text-5xl md:text-6xl lg:text-7xl leading-tight transition-all duration-700 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
             >
               Powerful Features for{" "}
               <span className="relative inline-block">
                 <span className="text-gradient-secondary">Modern Research</span>
-                <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
+                <svg
+                  className="absolute -bottom-2 left-0 w-full"
+                  viewBox="0 0 300 12"
+                  fill="none"
+                >
                   <path
                     d="M2 10C50 4 100 2 150 6C200 10 250 4 298 2"
                     stroke="url(#feature-gradient)"
@@ -119,7 +135,13 @@ const Features = () => {
                     strokeLinecap="round"
                   />
                   <defs>
-                    <linearGradient id="feature-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <linearGradient
+                      id="feature-gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
                       <stop offset="0%" stopColor="hsl(var(--secondary))" />
                       <stop offset="100%" stopColor="hsl(var(--primary))" />
                     </linearGradient>
@@ -128,28 +150,27 @@ const Features = () => {
               </span>
             </h1>
             <p
-              className={`text-muted-foreground text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`text-muted-foreground text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
             >
-              Everything you need to accelerate your computational biology research, all in one platform.
+              Everything you need to accelerate your computational biology
+              research, all in one platform.
             </p>
           </div>
         </div>
       </section>
-
-      {/* Highlights */}
-      <section className="py-12 border-y border-border/40 bg-muted/20">
+      {/* Video Showcase */}
+      <section className="py-20 bg-muted/20 border-y border-border/40">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {highlights.map((item, i) => (
-              <div
-                key={i}
-                className="text-center p-6 rounded-2xl transition-all duration-500 hover:bg-card/50"
-              >
-                <h3 className="text-gradient text-5xl font-bold mb-2">{item.value}</h3>
-                <p className="font-semibold text-lg mb-1">{item.label}</p>
-                <p className="text-muted-foreground text-sm">{item.description}</p>
-              </div>
-            ))}
+          <div className="max-w-5xl mx-auto">
+            <div className="relative aspect-video rounded-3xl overflow-hidden border border-border/50 shadow-2xl bg-black">
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/d95J8yzvjbQ"
+                title="Phage Platform Overview"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -210,19 +231,22 @@ const Features = () => {
                 {
                   step: "01",
                   title: "Upload Your Structure",
-                  description: "Drop your PDB files for proteins and SDF files for ligands. We handle the rest.",
+                  description:
+                    "Drop your PDB files for proteins and SDF files for ligands. We handle the rest.",
                   gradient: "from-blue-500 to-cyan-500",
                 },
                 {
                   step: "02",
                   title: "Configure Parameters",
-                  description: "Choose simulation length, temperature, and other parameters. Use our presets or customize.",
+                  description:
+                    "Choose simulation length, temperature, and other parameters. Use our presets or customize.",
                   gradient: "from-purple-500 to-pink-500",
                 },
                 {
                   step: "03",
                   title: "Analyze Results",
-                  description: "View trajectories, plots, and export publication-ready figures automatically.",
+                  description:
+                    "View trajectories, plots, and export publication-ready figures automatically.",
                   gradient: "from-emerald-500 to-teal-500",
                 },
               ].map((item, i) => (
@@ -230,7 +254,9 @@ const Features = () => {
                   key={i}
                   className="group flex gap-6 p-6 rounded-2xl transition-all duration-300 hover:bg-card/50"
                 >
-                  <div className={`flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white font-bold text-xl shadow-lg transition-transform group-hover:scale-110`}>
+                  <div
+                    className={`flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white font-bold text-xl shadow-lg transition-transform group-hover:scale-110`}
+                  >
                     {item.step}
                   </div>
                   <div>

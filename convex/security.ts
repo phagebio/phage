@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+
 const SECURITY_CONFIG = {
   allowedOrigins: ["*"],
   signatureValidityWindow: 5 * 60 * 1000,
@@ -12,7 +13,7 @@ export function validateOrigin(origin: string | null): boolean {
     return origin.includes("localhost") || origin.includes("127.0.0.1");
   }
   return SECURITY_CONFIG.allowedOrigins.some(
-    (allowed) => origin === allowed || origin.startsWith(allowed)
+    (allowed) => origin === allowed || origin.startsWith(allowed),
   );
 }
 export function generateNonce(): string {
@@ -34,7 +35,7 @@ export function getSecurityHeaders() {
     "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
     "Content-Security-Policy": [
       "default-src 'self'",
-      `connect-src 'self' ${process.env.VITE_CONVEX_URL || ''} https://*.convex.cloud`,
+      `connect-src 'self' ${process.env.VITE_CONVEX_URL || ""} https://*.convex.cloud`,
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
@@ -56,11 +57,11 @@ export const checkRateLimit = mutation({
     const recentRequests = await ctx.db
       .query("rateLimits")
       .withIndex("by_identifier_timestamp", (q) =>
-        q.eq("identifier", args.identifier).gt("timestamp", oneHourAgo)
+        q.eq("identifier", args.identifier).gt("timestamp", oneHourAgo),
       )
       .collect();
     const requestsLastMinute = recentRequests.filter(
-      (r) => r.timestamp > oneMinuteAgo
+      (r) => r.timestamp > oneMinuteAgo,
     ).length;
     const requestsLastHour = recentRequests.length;
     if (requestsLastMinute >= SECURITY_CONFIG.maxRequestsPerMinute) {
@@ -114,7 +115,7 @@ export const logSecurityEvent = mutation({
       v.literal("info"),
       v.literal("warning"),
       v.literal("error"),
-      v.literal("critical")
+      v.literal("critical"),
     ),
   },
   handler: async (ctx, args) => {
@@ -136,15 +137,17 @@ export const getSecurityLogs = query({
         v.literal("info"),
         v.literal("warning"),
         v.literal("error"),
-        v.literal("critical")
-      )
+        v.literal("critical"),
+      ),
     ),
   },
   handler: async (ctx, args) => {
     const limit = args.limit || 100;
     let logsQuery = ctx.db.query("securityLogs").order("desc");
     if (args.severity) {
-      logsQuery = logsQuery.filter((q) => q.eq(q.field("severity"), args.severity));
+      logsQuery = logsQuery.filter((q) =>
+        q.eq(q.field("severity"), args.severity),
+      );
     }
     return await logsQuery.take(limit);
   },
